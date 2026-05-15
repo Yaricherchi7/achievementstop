@@ -1,0 +1,140 @@
+{
+  "$schema": "https://developers.reddit.com/schema/config-file.v1.json",
+  "name": "achievementstop",
+  "post": {
+    "dir": "dist/client",
+    "entrypoints": {
+      "default": {
+        "inline": true,
+        "entry": "splash.html"
+      },
+      "game": {
+        "entry": "game.html"
+      }
+    }
+  },
+  "media": {
+    "dir": "public"
+  },
+  "server": {
+    "dir": "dist/server",
+    "entry": "index.cjs"
+  },
+  "menu": {
+    "items": [
+      {
+        "label": "Open Community Achievements",
+        "description": "Open the moderator dashboard.",
+        "location": "subreddit",
+        "forUserType": "moderator",
+        "postFilter": "none",
+        "endpoint": "/internal/menu/open-dashboard"
+      },
+      {
+        "label": "Award Achievement",
+        "description": "Choose achievement, reason, visibility, and flair.",
+        "location": ["post", "comment"],
+        "forUserType": "moderator",
+        "postFilter": "none",
+        "endpoint": "/internal/menu/award-custom"
+      },
+      {
+        "label": "Award Helpful Hero",
+        "description": "Award a helpful contributor badge to the author.",
+        "location": ["post", "comment"],
+        "forUserType": "moderator",
+        "postFilter": "none",
+        "endpoint": "/internal/menu/award-helpful"
+      },
+      {
+        "label": "Nominate Meme of the Week",
+        "description": "Nominate this post for the weekly recap.",
+        "location": "post",
+        "forUserType": "moderator",
+        "postFilter": "none",
+        "endpoint": "/internal/menu/nominate-post"
+      },
+      {
+        "label": "Award Community Legend",
+        "description": "Award a rare moderator recognition badge.",
+        "location": ["post", "comment"],
+        "forUserType": "moderator",
+        "postFilter": "none",
+        "endpoint": "/internal/menu/award-legend"
+      },
+      {
+        "label": "Revoke Latest Badge",
+        "description": "Revoke the latest visible badge for the author.",
+        "location": ["post", "comment"],
+        "forUserType": "moderator",
+        "postFilter": "none",
+        "endpoint": "/internal/menu/revoke-latest"
+      }
+    ]
+  },
+  "permissions": {
+    "payments": true,
+    "reddit": {
+      "enable": true,
+      "asUser": ["SUBMIT_POST", "SUBMIT_COMMENT", "SUBSCRIBE_TO_SUBREDDIT"]
+    }
+  },
+  "forms": {
+    "manual_award": "/internal/menu/manual-award-submit"
+  },
+  "payments": {
+    "products": [
+      {
+        "sku": "supporter_badge",
+        "price": 100,
+        "displayName": "Supporter Badge",
+        "accountingType": "DURABLE",
+        "description": "Cosmetic supporter badge and optional flair. No leaderboard or gameplay advantage."
+      },
+      {
+        "sku": "community_theme_pack",
+        "price": 500,
+        "displayName": "Community Theme Pack",
+        "accountingType": "DURABLE",
+        "description": "Premium gallery and recap themes for moderators."
+      },
+      {
+        "sku": "season_pack",
+        "price": 500,
+        "displayName": "Season Pack",
+        "accountingType": "DURABLE",
+        "description": "Monthly season mode structure for community recaps and leaderboards."
+      },
+      {
+        "sku": "advanced_recaps",
+        "price": 500,
+        "displayName": "Advanced Recaps",
+        "accountingType": "DURABLE",
+        "description": "Automatic recap scheduling and advanced recap templates."
+      }
+    ],
+    "endpoints": {
+      "fulfillOrder": "/internal/payments/fulfill-order",
+      "refundOrder": "/internal/payments/refund-order"
+    }
+  },
+  "triggers": {
+    "onAppInstall": "/internal/triggers/on-app-install",
+    "onPostSubmit": "/internal/triggers/on-post-submit",
+    "onCommentSubmit": "/internal/triggers/on-comment-submit",
+    "onPostUpdate": "/internal/triggers/on-post-update",
+    "onPostReport": "/internal/triggers/on-post-report"
+  },
+  "scheduler": {
+    "tasks": {
+      "weekly-recap": {
+        "endpoint": "/internal/scheduler/weekly-recap",
+        "cron": "0 9 * * 1"
+      }
+    }
+  },
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build"
+  }
+}
